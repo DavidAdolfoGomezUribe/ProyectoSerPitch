@@ -390,7 +390,7 @@ html{
           height: 11.5vw;
           border-radius: 1vw;
           color: rgb(255, 255, 255);
-
+          
           
         }
      }
@@ -400,6 +400,15 @@ html{
   }
 
 }
+.modalform{
+  
+  display:  flex;
+  flex-direction: row;
+  
+  
+}
+
+
 /* seccion para el carrusel lateral con movimiento automatico diablo q dificil */
 >section:nth-child(4){
   position: absolute;

@@ -133,10 +133,6 @@ const Home: NextPage = () => {
   // notacion de tipescrtip , asi se declara un objeto en typescript declarando , en este ejemplo , que ambos son de tipo string
   //[key,value]
 
-
- 
-
-
   const handleCarClick = (carName:string) => {
 
     const images: Record<string, string> = {
@@ -147,20 +143,9 @@ const Home: NextPage = () => {
       'Chery Omoda 5': '/CheryOmoda5.png'
     };
 
-   
-    
-
-
     setCurrentCarImage(images[carName]);
   
   };
-
-  
-
-
-  
-    
-  
 
   return (
     <div>
