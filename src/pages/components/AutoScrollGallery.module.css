@@ -1,0 +1,22 @@
+.galleryContainer {
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  .scrollingGallery {
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    will-change: transform;
+  }
+  
+  .galleryItem {
+    flex: none;
+  }
+  
+   .logoImage {
+    margin: 0 1vw;
+    padding: 0 0.75vw;
+    width: 8.33vw;
+    height: 8.33vw;
+  } 

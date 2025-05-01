@@ -1,0 +1,15 @@
+Copyright © 2025 David Adolfo Gomez Uribe
+
+Todos los derechos reservados.
+
+Este código fuente se proporciona únicamente con fines de visualización y referencia.
+
+Está prohibido copiar, reproducir, distribuir, modificar, traducir, reutilizar, reempaquetar o utilizar este código, total o parcialmente, para cualquier propósito, ya sea personal, educativo, comercial, publicitario, institucional, académico o de investigación, sin el consentimiento expreso y por escrito del autor.
+
+Queda expresamente prohibido el uso de este código en cualquier producto, proyecto, aplicación, startup, software como servicio (SaaS), contenido multimedia, o cualquier medio físico o digital con o sin fines de lucro.
+
+La publicación de este código en un repositorio público no implica el otorgamiento de ninguna licencia implícita o explícita para su uso.
+
+Cualquier uso no autorizado de este código podrá ser considerado una violación a los derechos de autor y será perseguido conforme a la legislación aplicable.
+
+Contacto para permisos o licenciamiento: dav.studios95@gmail.com
