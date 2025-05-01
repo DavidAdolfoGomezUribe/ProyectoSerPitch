@@ -5,19 +5,19 @@ import { CardanoWallet } from '@meshsdk/react';
 import { Transaction } from '@meshsdk/core';
 import Image from 'next/image';
 import AutoScrollGallery from "./components/AutoScrollGallery";
+import  ModalForm  from "./components/modalform";
+
+
+
 const Home: NextPage = () => {
 
   const { connected, wallet } = useWallet();
   const [balance, setBalance] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [amount,setAmount] = useState(1);
+  
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   
-  const [currentCar,setCurrentCar ] = useState({
-    name: 'Toyota Corolla Cross Hybrid GR Sport',
-    image: '/Toyota.png',
-    price: '0.10' // Precio base para Toyota
-  });
+
   
   const imagePaths = [
     '/carone.png',
@@ -99,15 +99,16 @@ const Home: NextPage = () => {
 
       // Limpiar carrito después de transacción exitosa
       localStorage.removeItem('carPurchases');
-      setAmount(1);
+      
   
     } catch (error) {
       console.error('Error en la transacción:', error);
       alert(`❌ Error en la transacción: ${error instanceof Error ? error.message : 'Error desconocido'}`);
     }
   }
-
   
+  //end
+
   const getBalance = useCallback(async () => {
     if (wallet) {
       setLoading(true);
@@ -122,33 +123,18 @@ const Home: NextPage = () => {
   }, [connected, getBalance]); 
 
   
-  
-  
-  
-
-
   // Handler para cambiar imagen (nuevo)
   const handleImageClick = () => {
     setCurrentImageIndex((prev) => (prev + 1) % imagePaths.length);
   };
   
-
   const [currentCarImage,setCurrentCarImage]= useState<string>("/Toyota.png")
 
-
-  
   // notacion de tipescrtip , asi se declara un objeto en typescript declarando , en este ejemplo , que ambos son de tipo string
   //[key,value]
 
 
-  const carPrices : Record<string, string> =  {
-    'Toyota Corolla Cross Hybrid GR Sport': '1',
-    'Suzuki Grand Vitara': '1.1',
-    'Suzuki S-Presso': '1.2',
-    'Subaru WRX': '1.3',
-    'Chery Omoda 5': '1.4'
-
-  }
+ 
 
 
   const handleCarClick = (carName:string) => {
@@ -161,33 +147,16 @@ const Home: NextPage = () => {
       'Chery Omoda 5': '/CheryOmoda5.png'
     };
 
-    setCurrentCar({
-      name: carName,
-      image: images[carName],
-      price: carPrices[carName]
-    });
-    setAmount(1); 
+   
+    
 
 
     setCurrentCarImage(images[carName]);
   
   };
 
-  const incrementAmount = () => setAmount(prev => prev + 1);
-  const decrementAmount = () => setAmount(prev => (prev > 1 ? prev - 1 : 1));
-
-  const saveToLocalStorage = () => {
-    const carData = {
-      name: currentCar.name,
-      amount: amount.toString(),
-      price: currentCar.price
-    };
   
-    // Sobrescribe directamente con el nuevo registro
-    localStorage.setItem('carPurchases', JSON.stringify(carData));
-    alert('Datos guardados con exito :'+JSON.stringify(Object.values(carData),null,4));
-    console.log('Datos guardados (sobrescritos):', carData);
-  };
+
 
   
     
@@ -323,15 +292,9 @@ const Home: NextPage = () => {
                 <Image width={1000} height={1000} alt="icon" src={currentCarImage} ></Image>
                 
                 <div>
-                  <h2>AMOUNT</h2>
                   
-                  <div>
-                    <p onClick={decrementAmount} >-</p>
-                    <p>{amount}</p>
-                    <p  onClick={incrementAmount}>+</p>
-                  </div>
 
-                  <button  onClick={saveToLocalStorage} >Add</button>
+                  <ModalForm />
                   
                 </div>
                 
