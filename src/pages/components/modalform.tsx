@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -38,6 +38,7 @@ interface FormState {
   address: string;
   selectedCar: string;
   quantity: number;
+  price: number;
 }
 
 export default function ModalForm() {
@@ -50,29 +51,28 @@ export default function ModalForm() {
     address: '',
     selectedCar: '',
     quantity: 0,
+    price: 0
   });
 
-  // Cargar datos de localStorage al iniciar
-  useEffect(() => {
-    const savedData = localStorage.getItem('carPurchases');
-    if (savedData) {
-      setFormState(JSON.parse(savedData));
-    }
-  }, []);
+
 
   // Guardar datos en localStorage cuando cambien
-  function handlerClick() {
-    localStorage.setItem('carPurchases', JSON.stringify(formState));
-  }
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const selectedCar = cars.find(car => car.name === formState.selectedCar);
-  const totalPrice = selectedCar ? selectedCar.price * formState.quantity : 0;
+  const finalPrice = selectedCar ? selectedCar.price * formState.quantity : 0;
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
+
+    localStorage.setItem('carPurchases', JSON.stringify({
+        ...formState,
+        price: finalPrice
+      }));
+
+
     // Limpiar formulario después de enviar
     setFormState({
       firstName: '',
@@ -82,6 +82,8 @@ export default function ModalForm() {
       address: '',
       selectedCar: '',
       quantity: 0,
+      price: 0
+      
     });
     handleClose();
   };
@@ -172,14 +174,14 @@ export default function ModalForm() {
             />
 
             <Typography variant="h6" sx={{ mt: 2 }}>
-              Total: ${totalPrice.toFixed(2)}
+              Total: ${finalPrice.toFixed(2)}
             </Typography>
 
             <Button 
               variant="contained" 
               type="submit"
               sx={{ mt: 2 }}
-              onClick={handlerClick}
+              
             >
               Add Car
             </Button>
