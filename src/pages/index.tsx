@@ -383,11 +383,10 @@ const Home: NextPage = () => {
           <article>
             <div>
               <div>
-                <h1>Buy car</h1>
+                <h1><strong>Buy car</strong></h1>
                 <p>
-                  BuyCar está listo para ayudar a los clientes a encontrar fácilmente el automóvil de sus
-                  sueños y ofrece una variedad de soluciones de pago flexibles y personalizadas. BuyCar se compromete a brindar
-                  la mejor y más satisfactoria experiencia de compra de automóviles para cada cliente.
+                BuyCar is ready to help customers easily find their dream car and offers a variety of flexible and personalized payment solutions. BuyCar is 
+                committed to providing the best and most satisfying car buying experience for every customer.
                 </p>
                 <div>
                   {/* img */}
@@ -401,7 +400,7 @@ const Home: NextPage = () => {
               </div>
               
               <div>
-                <h1>Company</h1>
+                <h1><strong>Company</strong></h1>
                 <p>About Us</p>
                 <p>Warranty Policy</p>
                 <p>Terms of Service</p>
@@ -409,14 +408,14 @@ const Home: NextPage = () => {
               
               
               <div>
-                <h1>Knowledge</h1>
+                <h1><strong>Knowledge</strong></h1>
                 <p>Car Reviews</p>
                 <p>Car News</p>
               </div>
               
               
               <div>
-                <h1>Purchase </h1>
+                <h1><strong>Purchase</strong> </h1>
                 <p>Cash payment</p>
                 <p>Credit payment</p>
                 <p>Login</p>
