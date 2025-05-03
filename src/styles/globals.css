@@ -400,11 +400,13 @@ html{
   }
 
 }
+
+
+
 .modalform{
   
   display:  flex;
   flex-direction: row;
-  
   
 }
 
@@ -513,6 +515,71 @@ html{
   
 }
 
+>section:nth-child(7){
+position: absolute;
+  top: 181.72vw;
+  height: 28.88vw;
+  width: 100%;
+  background-color: #252525;
+
+  >article{
+    width: 83.33vw;
+    height: 23.33vw;
+    position: absolute;
+    top: 2.77vw;
+    left: 8.33vw;
+    align-items: center;
+    color:white;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.66vw;
+    gap: 5vw;
+    
+    >div:nth-child(1){
+      display: flex;
+      flex-direction: row;
+      height: 100%;
+      width: 100%;
+      justify-content: space-between;
+      >div:nth-child(1){
+        display:  flex;
+        flex-direction: column;
+        height: 100%;
+        width: 40.83vw ;
+        background-color: aqua;
+
+      }
+      >div:nth-child(2){
+        height: 100%;
+        background-color: rebeccapurple;
+        width: 12.25vw;
+      }
+      >div:nth-child(3){
+        height: 100%;
+        background-color: rebeccapurple;
+        width: 12.25vw;
+      }
+      >div:nth-child(4){
+        height: 100%;
+        background-color: rebeccapurple;
+        width: 12.25vw;
+      }
+    }
+
+    >div:nth-child(2){
+      width: 100%;
+      background-color: #252525;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      >div:nth-child(2){
+        display: flex;
+        flex-direction: row;
+      }
+    }
+
+  }
+}
 
 
 

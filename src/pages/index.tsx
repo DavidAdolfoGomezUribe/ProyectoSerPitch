@@ -379,12 +379,66 @@ const Home: NextPage = () => {
 
         </section>
 
+        <section>
+          <article>
+            <div>
+              <div>
+                <h1>Buy car</h1>
+                <p>
+                  BuyCar está listo para ayudar a los clientes a encontrar fácilmente el automóvil de sus
+                  sueños y ofrece una variedad de soluciones de pago flexibles y personalizadas. BuyCar se compromete a brindar
+                  la mejor y más satisfactoria experiencia de compra de automóviles para cada cliente.
+                </p>
+                <div>
+                  {/* img */}
+                  <p>Street 27A Av St McClaire , LA, USA</p>
+                </div>
+                <div>
+                  {/* img */}
+                  <p>info@buycar.co</p>
+                </div>
+
+              </div>
+              
+              <div>
+                <h1>Company</h1>
+                <p>About Us</p>
+                <p>Warranty Policy</p>
+                <p>Terms of Service</p>
+              </div>
+              
+              
+              <div>
+                <h1>Knowledge</h1>
+                <p>Car Reviews</p>
+                <p>Car News</p>
+              </div>
+              
+              
+              <div>
+                <h1>Purchase </h1>
+                <p>Cash payment</p>
+                <p>Credit payment</p>
+                <p>Login</p>
+                 
+              </div>
+            </div>
+            <div>
+              <p>© 2025 David A Gomez U</p>
+              <div>
+                <p>img1</p>
+                <p>img2</p>
+                <p>img3</p>
+                <p>img4</p>
+              </div>
+            </div>
+
+          </article>
+
+        </section>
+
 
       </main>
-
-
-          
-
 
     </div>
   );
