@@ -284,12 +284,7 @@ const Home: NextPage = () => {
               <div>
                 <Image width={1000} height={1000} alt="icon" src={currentCarImage} ></Image>
                 
-                <div>
-                  
-
-                  <ModalForm />
-                  
-                </div>
+                <ModalForm />
                 
               </div>
 

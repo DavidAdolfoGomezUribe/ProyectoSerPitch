@@ -381,15 +381,25 @@ html{
           display: flex;
           flex-direction: column;
           align-items: center;
-          
+          justify-content: center;
           background-color: rgba(63, 63, 63, 0.50);
           position: absolute;
           right: 0;
           bottom: 0;
           width: 12vw;
-          height: 11.5vw;
+          height: 3vw;
           border-radius: 1vw;
           color: rgb(255, 255, 255);
+          >button{
+            border-radius: 1vw;
+            width: 100%;
+            font-size: 1.1vw;
+            color: white;
+            &:hover{
+              background-color: #252525;
+
+            }
+          }
           
           
         }
@@ -484,6 +494,7 @@ html{
 }
 
 >section:nth-child(6){
+  
   position: absolute;
   top: 166.17vw;
   height: 15.55vw;
