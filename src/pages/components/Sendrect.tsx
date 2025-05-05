@@ -1,56 +1,96 @@
-import { useAssets } from "@meshsdk/react";
 import { useEffect, useState } from "react";
+import styles from "../../styles/Facturas.module.css";
 
-import styles from "../../styles/Facturas.module.css"
-import { table } from "console";
+interface Bill {
+  billNumber: string;
+  firstName: string;
+  lastName: string;
+  country: string;
+  phone: number;
+  address: string;
+  selectedCar: string;
+  quantity: number;
+  price: number;
+  txHash: string;
+  timestamp: string;
+}
 
 export default function Sendrect() {
-  const [lista, setLista] = useState([]);
-
+  const [lista, setLista] = useState<Bill[]>([]);
+  const [detallesVisibles, setDetallesVisibles] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     async function datos() {
-      const response = await fetch("https://67f854922466325443ec6b72.mockapi.io/bills")
-      const data = await response.json()
-      console.log(data)
-      setLista(data)      
-  } 
-  datos()
-}, []); // [] asegura que esto se ejecute solo una vez al montar el componente
-return (
-  <>
-  <section className={styles.section__factura}>
-    <h1>REGISTRO DE FACTURACION</h1>
-    {lista.length > 0 ? (
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {lista.map((item) => (
-            <tr key={item.id}>
-              <td>{item.id}</td>
-              <td>{item.firstName}</td>
-              <td>{item.lastName}</td>
-              <td>...</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    ) : (
-      <p>Cargando los datos...</p>
-    )}
+      const response = await fetch("https://67f854922466325443ec6b72.mockapi.io/bills");
+      const data = await response.json();
+      setLista(data);
+    }
+    datos();
+  }, []);
 
-    <p>{/* AQUI VAN LAS FACTURAS ENVIADAS */}</p>
-  </section>
-</>
+  function formatFecha(timestamp: string) {
+    const fecha = new Date(timestamp);
+    const dia = String(fecha.getDate()).padStart(2, '0');
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+    const año = String(fecha.getFullYear()).slice(-2);
+    return `${dia}/${mes}/${año}`;
+  }
 
-);
+  function toggleDetalles(id: string) {
+    setDetallesVisibles(prev => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  }
+
+  return (
+    <section className={styles.section__factura}>
+      <h1>REGISTRO DE FACTURACIÓN</h1>
+      <div className={styles.factura__grid}>
+        {/* Facturas por enviar */}
+        <div className={styles.factura__columna}>
+          <h2>Por Enviar</h2>
+          {lista.length > 0 ? (
+            <ul className={styles.factura__lista}>
+              {lista.map((item) => (
+                <li
+                  key={item.billNumber}
+                  className={styles.factura__item}
+                  data-id={item.billNumber}
+                  data-status="pendiente"
+                >
+                  <p><strong>{item.firstName} {item.lastName}</strong></p>
+                  <p>Dirección: {item.address}</p>
+                  <p>Auto: {item.selectedCar}</p>
+                  <button onClick={() => toggleDetalles(item.billNumber)}>
+                    {detallesVisibles[item.billNumber] ? "Ocultar detalles" : "Ver detalles"}
+                  </button>
+
+                  {detallesVisibles[item.billNumber] && (
+                    <div className={styles.factura__detalles}>
+                      <p>País: {item.country}</p>
+                      <p>Teléfono: {item.phone}</p>
+                      <p>Cantidad: {item.quantity}</p>
+                      <p>Precio: {item.price}</p>
+                      <p>Fecha: {formatFecha(item.timestamp)}</p>
+                      <p>TxHash: {item.txHash}</p>
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>Cargando datos...</p>
+          )}
+        </div>
+
+        {/* Facturas enviadas (a integrar luego con drag and drop) */}
+        <div className={styles.factura__columna}>
+          <h2>Enviadas</h2>
+          {/* Por ahora vacío */}
+          <p>Arrastra aquí las facturas enviadas.</p>
+        </div>
+      </div>
+    </section>
+  );
 }
-
- //como mostrar info de fetch de datos.
