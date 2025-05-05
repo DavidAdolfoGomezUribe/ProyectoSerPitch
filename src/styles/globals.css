@@ -381,16 +381,26 @@ html{
           display: flex;
           flex-direction: column;
           align-items: center;
-          
+          justify-content: center;
           background-color: rgba(63, 63, 63, 0.50);
           position: absolute;
           right: 0;
           bottom: 0;
           width: 12vw;
-          height: 11.5vw;
+          height: 3vw;
           border-radius: 1vw;
           color: rgb(255, 255, 255);
+          >button{
+            border-radius: 1vw;
+            width: 100%;
+            font-size: 1.1vw;
+            color: white;
+            &:hover{
+              background-color: #252525;
 
+            }
+          }
+          
           
         }
      }
@@ -400,6 +410,17 @@ html{
   }
 
 }
+
+
+
+.modalform{
+  
+  display:  flex;
+  flex-direction: row;
+  
+}
+
+
 /* seccion para el carrusel lateral con movimiento automatico diablo q dificil */
 >section:nth-child(4){
   position: absolute;
@@ -473,6 +494,7 @@ html{
 }
 
 >section:nth-child(6){
+  
   position: absolute;
   top: 166.17vw;
   height: 15.55vw;
@@ -504,6 +526,94 @@ html{
   
 }
 
+>section:nth-child(7){
+position: absolute;
+  top: 181.72vw;
+  height: 35.88vw;
+  width: 100%;
+  background-color: #252525;
+
+  >article{
+    width: 83.33vw;
+    height: 24.33vw;
+    position: absolute;
+    top: 2.77vw;
+    left: 8.33vw;
+    align-items: center;
+    color:white;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.66vw;
+    gap: 5vw;
+    
+    >div:nth-child(1){
+      display: flex;
+      flex-direction: row;
+      height: 100%;
+      width: 100%;
+      justify-content: space-between;
+      >div:nth-child(1){
+        
+        display:  flex;
+        flex-direction: column;
+        gap: 1.11vw;
+        height: 100%;
+        width: 40.83vw ;
+        
+        h1{
+        color: rgba(102, 102, 102, 1);
+        }
+      }
+      >div:nth-child(2){
+        display: flex;
+        flex-direction: column;
+        gap: 1.11vw;
+        height: 100%;
+        
+        width: 12.25vw;
+
+        h1{
+          color: rgba(102, 102, 102, 1);
+          }
+      }
+      
+      >div:nth-child(3){
+        display: flex;
+        flex-direction: column;
+        gap: 1.11vw;
+        height: 100%;
+        width: 12.25vw;
+        h1{
+          color: rgba(102, 102, 102, 1);
+          }
+      }
+      >div:nth-child(4){
+        display: flex;
+        flex-direction: column;
+        gap: 1.11vw;
+        height: 100%;
+        
+        width: 12.25vw;
+        h1{
+          color: rgba(102, 102, 102, 1);
+          }
+      }
+    }
+
+    >div:nth-child(2){
+      width: 100%;
+      background-color: #252525;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      >div:nth-child(2){
+        display: flex;
+        flex-direction: row;
+      }
+    }
+
+  }
+}
 
 
 

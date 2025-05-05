@@ -30,44 +30,54 @@ const Home: NextPage = () => {
     const response = await fetch('https://67f854922466325443ec6b72.mockapi.io/bills', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...carData, txHash }),
+      body: JSON.stringify({ ...carData, txHash ,  timestamp: Date.now() }),
     });
     return await response.json();
   }
 
   async function tx() {
+    // Obtener datos del localStorage
     const carPurchase = localStorage.getItem('carPurchases');
     
+    // Verificar si hay datos en el carrito
     if (!carPurchase) {
-      alert('🚨 No hay nada en el carrito');
+      alert('🚨 El carrito está vacío. Por favor complete el formulario primero.');
       return;
     }
     
     try {
-      const { price, amount } = JSON.parse(carPurchase);
+      const purchaseData = JSON.parse(carPurchase);
+      
+      // Verificar que todos los campos requeridos estén llenos
+      const requiredFields = ['firstName', 'lastName', 'country', 'phone', 'address', 'selectedCar', 'quantity', 'price'];
+      const missingFields = requiredFields.filter(field => !purchaseData[field]);
+      
+      if (missingFields.length > 0) {
+        alert(`🚨 Por favor complete todos los datos del formulario. Faltan: ${missingFields.join(', ')}`);
+        return;
+      }
       
       // Validar datos numéricos
-      if (isNaN(price) || isNaN(amount)) {
-        alert('Error: Datos inválidos en el carrito');
+      if (isNaN(purchaseData.quantity) || isNaN(purchaseData.price)) {
+        alert('Error: Datos inválidos en el carrito (cantidad o precio no son números válidos)');
         return;
       }
   
       // Calcular total en lovelace (1 ADA = 1,000,000 lovelace)
-      const priceNumber = parseFloat(price);
-      const amountNumber = parseInt(amount);
-      const totalLovelace = Math.round(priceNumber * amountNumber * 1000000);
+      const totalLovelace = Math.round(purchaseData.price * 1000000);
   
       if (!wallet) {
         alert('Wallet no conectada');
         return;
       }
   
-      // Verificar balance suficiente
-      if (balance !== null && balance < totalLovelace / 1000000) {
-        alert('❌ Balance insuficiente');
+      // Verificar balance suficiente (comparando en ADA)
+      if (balance !== null && balance < purchaseData.price) {
+        alert(`❌ Balance insuficiente. Necesitas ${purchaseData.price} ADA pero solo tienes ${balance} ADA`);
         return;
       }
   
+      // Construir transacción
       const tx = new Transaction({ initiator: wallet }).sendLovelace(
         'addr1q8hgvw69utaqwlz3zdwswa39rl428cqe47uv97jht89034slnpfxfa09mlp65fa6hnqk4pu4ar57vzrqtx6s84yhdpuqplk2a7',
         totalLovelace.toString()
@@ -77,7 +87,7 @@ const Home: NextPage = () => {
         throw new Error(`Error construyendo transacción: ${error.message}`);
       });
   
-      // Paso 2: Firmar transacción
+      // Firmar transacción
       const signedTx = await wallet.signTx(unsignedTx).catch(error => {
         if (error.message.includes('declined')) {
           throw new Error('Has cancelado la firma de la transacción');
@@ -85,29 +95,27 @@ const Home: NextPage = () => {
         throw new Error(`Error firmando transacción: ${error.message}`);
       });
   
-      // Paso 3: Enviar transacción
+      // Enviar transacción
       const txHash = await wallet.submitTx(signedTx).catch(error => {
         throw new Error(`Error enviando transacción: ${error.message}`);
       });
       
-      postFacture(txHash)
+      // Enviar factura (asumo que postFacture es una función definida en otro lugar)
+      postFacture(txHash);
 
       console.log('Transacción exitosa:', txHash);
       alert(`✅ Transacción exitosa!\nHash: ${txHash}`);
       
-
-
       // Limpiar carrito después de transacción exitosa
       localStorage.removeItem('carPurchases');
       
-  
     } catch (error) {
       console.error('Error en la transacción:', error);
       alert(`❌ Error en la transacción: ${error instanceof Error ? error.message : 'Error desconocido'}`);
     }
-  }
+}
+  //end of transacciton function
   
-  //end
 
   const getBalance = useCallback(async () => {
     if (wallet) {
@@ -133,10 +141,6 @@ const Home: NextPage = () => {
   // notacion de tipescrtip , asi se declara un objeto en typescript declarando , en este ejemplo , que ambos son de tipo string
   //[key,value]
 
-
- 
-
-
   const handleCarClick = (carName:string) => {
 
     const images: Record<string, string> = {
@@ -147,20 +151,9 @@ const Home: NextPage = () => {
       'Chery Omoda 5': '/CheryOmoda5.png'
     };
 
-   
-    
-
-
     setCurrentCarImage(images[carName]);
   
   };
-
-  
-
-
-  
-    
-  
 
   return (
     <div>
@@ -291,12 +284,7 @@ const Home: NextPage = () => {
               <div>
                 <Image width={1000} height={1000} alt="icon" src={currentCarImage} ></Image>
                 
-                <div>
-                  
-
-                  <ModalForm />
-                  
-                </div>
+                <ModalForm />
                 
               </div>
 
@@ -386,12 +374,65 @@ const Home: NextPage = () => {
 
         </section>
 
+        <section>
+          <article>
+            <div>
+              <div>
+                <h1><strong>Buy car</strong></h1>
+                <p>
+                BuyCar is ready to help customers easily find their dream car and offers a variety of flexible and personalized payment solutions. BuyCar is 
+                committed to providing the best and most satisfying car buying experience for every customer.
+                </p>
+                <div>
+                  {/* img */}
+                  <p>Street 27A Av St McClaire , LA, USA</p>
+                </div>
+                <div>
+                  {/* img */}
+                  <p>info@buycar.co</p>
+                </div>
+
+              </div>
+              
+              <div>
+                <h1><strong>Company</strong></h1>
+                <p>About Us</p>
+                <p>Warranty Policy</p>
+                <p>Terms of Service</p>
+              </div>
+              
+              
+              <div>
+                <h1><strong>Knowledge</strong></h1>
+                <p>Car Reviews</p>
+                <p>Car News</p>
+              </div>
+              
+              
+              <div>
+                <h1><strong>Purchase</strong> </h1>
+                <p>Cash payment</p>
+                <p>Credit payment</p>
+                <p>Login</p>
+                 
+              </div>
+            </div>
+            <div>
+              <p>© 2025 David A Gomez U</p>
+              <div>
+                <p>img1</p>
+                <p>img2</p>
+                <p>img3</p>
+                <p>img4</p>
+              </div>
+            </div>
+
+          </article>
+
+        </section>
+
 
       </main>
-
-
-          
-
 
     </div>
   );
