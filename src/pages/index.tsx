@@ -6,7 +6,7 @@ import { Transaction } from '@meshsdk/core';
 import Image from 'next/image';
 import AutoScrollGallery from "./components/AutoScrollGallery";
 import  ModalForm  from "./components/modalform";
-
+import Link from "next/link"
 
 
 const Home: NextPage = () => {
@@ -413,7 +413,7 @@ const Home: NextPage = () => {
                 <h1><strong>Purchase</strong> </h1>
                 <p>Cash payment</p>
                 <p>Credit payment</p>
-                <p>Login</p>
+                <Link href="/login">Log in</Link>
                  
               </div>
             </div>
