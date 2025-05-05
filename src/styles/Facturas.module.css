@@ -1,0 +1,10 @@
+.div__facturas{
+    background-color: blue;
+    display: flex;
+    gap: 50px;
+}
+
+.section__factura{
+    
+/*     background-color: red;
+ */}
