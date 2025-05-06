@@ -390,73 +390,25 @@ html{
           height: 11.5vw;
           border-radius: 1vw;
           color: rgb(255, 255, 255);
-
           
-          h2{
-            font-size: 1.22vw;
-            width: 100%;
-            border-radius: 1vw;
-            background-color: rgba(63, 63, 63, 0.50);
-            padding: 1vw 0 1vw 0;
-            text-align: center;
-          }
           
-          >div:nth-child(2){
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            
-            p{
-              transition: all 0.24s ease-in-out;
-              margin: 0.25vw;
-              padding: 0.5vw 1.2vw;
-              font-size: 1.11vw; 
-            }
-            
-            p:nth-child(2){
-              font-size: 1.5vw; 
-            }
-
-            p:nth-child(1):hover{
-              border-radius: 1vw;
-              background-color: rgba(163, 62, 62, 0.712);
-              cursor: pointer;
-              
-            }
-
-            p:nth-child(3):hover{
-              background-color: rgba(53, 172, 17, 0.486);
-              cursor: pointer;
-              border-radius: 1vw;
-            }
-          }
-
-
-          button{
-            transition: all 0.24s ease-in-out;
-            width: 80%;
-            height: 3.5vw;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.22vw;
-          }
-
-          button:hover{
-            border-radius: 1vw;
-            background-color: rgba(63, 63, 63, 0.50);
-          }
-        
         }
-      }
+     }
 
     }
 
   }
 
 }
+.modalform{
+  
+  display:  flex;
+  flex-direction: row;
+  
+  
+}
+
+
 /* seccion para el carrusel lateral con movimiento automatico diablo q dificil */
 >section:nth-child(4){
   position: absolute;

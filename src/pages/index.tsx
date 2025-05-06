@@ -5,19 +5,19 @@ import { CardanoWallet } from '@meshsdk/react';
 import { Transaction } from '@meshsdk/core';
 import Image from 'next/image';
 import AutoScrollGallery from "./components/AutoScrollGallery";
+import  ModalForm  from "./components/modalform";
+
+
+
 const Home: NextPage = () => {
 
   const { connected, wallet } = useWallet();
   const [balance, setBalance] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [amount,setAmount] = useState(1);
+  
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
   
-  const [currentCar,setCurrentCar ] = useState({
-    name: 'Toyota Corolla Cross Hybrid GR Sport',
-    image: '/Toyota.png',
-    price: '0.10' // Precio base para Toyota
-  });
+
   
   const imagePaths = [
     '/carone.png',
@@ -30,44 +30,54 @@ const Home: NextPage = () => {
     const response = await fetch('https://67f854922466325443ec6b72.mockapi.io/bills', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ...carData, txHash }),
+      body: JSON.stringify({ ...carData, txHash ,  timestamp: Date.now() }),
     });
     return await response.json();
   }
 
   async function tx() {
+    // Obtener datos del localStorage
     const carPurchase = localStorage.getItem('carPurchases');
     
+    // Verificar si hay datos en el carrito
     if (!carPurchase) {
-      alert('🚨 No hay nada en el carrito');
+      alert('🚨 El carrito está vacío. Por favor complete el formulario primero.');
       return;
     }
     
     try {
-      const { price, amount } = JSON.parse(carPurchase);
+      const purchaseData = JSON.parse(carPurchase);
+      
+      // Verificar que todos los campos requeridos estén llenos
+      const requiredFields = ['firstName', 'lastName', 'country', 'phone', 'address', 'selectedCar', 'quantity', 'price'];
+      const missingFields = requiredFields.filter(field => !purchaseData[field]);
+      
+      if (missingFields.length > 0) {
+        alert(`🚨 Por favor complete todos los datos del formulario. Faltan: ${missingFields.join(', ')}`);
+        return;
+      }
       
       // Validar datos numéricos
-      if (isNaN(price) || isNaN(amount)) {
-        alert('Error: Datos inválidos en el carrito');
+      if (isNaN(purchaseData.quantity) || isNaN(purchaseData.price)) {
+        alert('Error: Datos inválidos en el carrito (cantidad o precio no son números válidos)');
         return;
       }
   
       // Calcular total en lovelace (1 ADA = 1,000,000 lovelace)
-      const priceNumber = parseFloat(price);
-      const amountNumber = parseInt(amount);
-      const totalLovelace = Math.round(priceNumber * amountNumber * 1000000);
+      const totalLovelace = Math.round(purchaseData.price * 1000000);
   
       if (!wallet) {
         alert('Wallet no conectada');
         return;
       }
   
-      // Verificar balance suficiente
-      if (balance !== null && balance < totalLovelace / 1000000) {
-        alert('❌ Balance insuficiente');
+      // Verificar balance suficiente (comparando en ADA)
+      if (balance !== null && balance < purchaseData.price) {
+        alert(`❌ Balance insuficiente. Necesitas ${purchaseData.price} ADA pero solo tienes ${balance} ADA`);
         return;
       }
   
+      // Construir transacción
       const tx = new Transaction({ initiator: wallet }).sendLovelace(
         'addr1q8hgvw69utaqwlz3zdwswa39rl428cqe47uv97jht89034slnpfxfa09mlp65fa6hnqk4pu4ar57vzrqtx6s84yhdpuqplk2a7',
         totalLovelace.toString()
@@ -77,7 +87,7 @@ const Home: NextPage = () => {
         throw new Error(`Error construyendo transacción: ${error.message}`);
       });
   
-      // Paso 2: Firmar transacción
+      // Firmar transacción
       const signedTx = await wallet.signTx(unsignedTx).catch(error => {
         if (error.message.includes('declined')) {
           throw new Error('Has cancelado la firma de la transacción');
@@ -85,29 +95,28 @@ const Home: NextPage = () => {
         throw new Error(`Error firmando transacción: ${error.message}`);
       });
   
-      // Paso 3: Enviar transacción
+      // Enviar transacción
       const txHash = await wallet.submitTx(signedTx).catch(error => {
         throw new Error(`Error enviando transacción: ${error.message}`);
       });
       
-      postFacture(txHash)
+      // Enviar factura (asumo que postFacture es una función definida en otro lugar)
+      postFacture(txHash);
 
       console.log('Transacción exitosa:', txHash);
       alert(`✅ Transacción exitosa!\nHash: ${txHash}`);
       
-
-
       // Limpiar carrito después de transacción exitosa
       localStorage.removeItem('carPurchases');
-      setAmount(1);
-  
+      
     } catch (error) {
       console.error('Error en la transacción:', error);
       alert(`❌ Error en la transacción: ${error instanceof Error ? error.message : 'Error desconocido'}`);
     }
-  }
-
+}
+  //end of transacciton function
   
+
   const getBalance = useCallback(async () => {
     if (wallet) {
       setLoading(true);
@@ -122,34 +131,15 @@ const Home: NextPage = () => {
   }, [connected, getBalance]); 
 
   
-  
-  
-  
-
-
   // Handler para cambiar imagen (nuevo)
   const handleImageClick = () => {
     setCurrentImageIndex((prev) => (prev + 1) % imagePaths.length);
   };
   
-
   const [currentCarImage,setCurrentCarImage]= useState<string>("/Toyota.png")
 
-
-  
   // notacion de tipescrtip , asi se declara un objeto en typescript declarando , en este ejemplo , que ambos son de tipo string
   //[key,value]
-
-
-  const carPrices : Record<string, string> =  {
-    'Toyota Corolla Cross Hybrid GR Sport': '1',
-    'Suzuki Grand Vitara': '1.1',
-    'Suzuki S-Presso': '1.2',
-    'Subaru WRX': '1.3',
-    'Chery Omoda 5': '1.4'
-
-  }
-
 
   const handleCarClick = (carName:string) => {
 
@@ -161,37 +151,9 @@ const Home: NextPage = () => {
       'Chery Omoda 5': '/CheryOmoda5.png'
     };
 
-    setCurrentCar({
-      name: carName,
-      image: images[carName],
-      price: carPrices[carName]
-    });
-    setAmount(1); 
-
-
     setCurrentCarImage(images[carName]);
   
   };
-
-  const incrementAmount = () => setAmount(prev => prev + 1);
-  const decrementAmount = () => setAmount(prev => (prev > 1 ? prev - 1 : 1));
-
-  const saveToLocalStorage = () => {
-    const carData = {
-      name: currentCar.name,
-      amount: amount.toString(),
-      price: currentCar.price
-    };
-  
-    // Sobrescribe directamente con el nuevo registro
-    localStorage.setItem('carPurchases', JSON.stringify(carData));
-    alert('Datos guardados con exito :'+JSON.stringify(Object.values(carData),null,4));
-    console.log('Datos guardados (sobrescritos):', carData);
-  };
-
-  
-    
-  
 
   return (
     <div>
@@ -323,15 +285,9 @@ const Home: NextPage = () => {
                 <Image width={1000} height={1000} alt="icon" src={currentCarImage} ></Image>
                 
                 <div>
-                  <h2>AMOUNT</h2>
                   
-                  <div>
-                    <p onClick={decrementAmount} >-</p>
-                    <p>{amount}</p>
-                    <p  onClick={incrementAmount}>+</p>
-                  </div>
 
-                  <button  onClick={saveToLocalStorage} >Add</button>
+                  <ModalForm />
                   
                 </div>
                 
