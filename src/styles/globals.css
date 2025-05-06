@@ -532,6 +532,8 @@ html{
   }
 
 }
+
+/* MODO CLARO U OBSCURO PARA LA PAGINA DE FACTURAS */
 body.claro {
   background-color: #ffffff;
   color: #000000;
@@ -559,3 +561,4 @@ body.oscuro button {
   background-color: #333;
   color: #fff;
 }
+

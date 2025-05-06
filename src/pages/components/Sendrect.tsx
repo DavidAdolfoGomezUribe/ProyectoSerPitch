@@ -1,5 +1,5 @@
 import { useEffect, useState, Fragment } from "react";
-import styles from "../../styles/Facturas.module.css";
+import styles from "./Sendrect.module.css";
 
 export default function Sendrect() {
   const [lista, setLista] = useState<Bill[]>([]);
@@ -27,10 +27,10 @@ export default function Sendrect() {
     quantity: number;
     price: number;
     txHash: string;
-    timestamp: string;
+    timestamp: Date;
   }
 
-  function formatFecha(timestamp: any) {
+  function formatFecha(timestamp: Date) {
     const fecha = new Date(timestamp);
     const dia = String(fecha.getDate()).padStart(2, '0');
     const mes = String(fecha.getMonth() + 1).padStart(2, '0');
