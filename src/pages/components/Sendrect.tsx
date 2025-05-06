@@ -1,23 +1,42 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 import styles from "../../styles/Facturas.module.css";
-
-interface Bill {
-  billNumber: string;
-  firstName: string;
-  lastName: string;
-  country: string;
-  phone: number;
-  address: string;
-  selectedCar: string;
-  quantity: number;
-  price: number;
-  txHash: string;
-  timestamp: string;
-}
 
 export default function Sendrect() {
   const [lista, setLista] = useState<Bill[]>([]);
-  const [detallesVisibles, setDetallesVisibles] = useState<Record<string, boolean>>({});
+  const [filtroDia, setFiltroDia] = useState("");
+  const [filtroMes, setFiltroMes] = useState("");
+  const [filtroAnio, setFiltroAnio] = useState("");
+  const [expandido, setExpandido] = useState<{ [key: string]: boolean }>({});
+  const [modoOscuro, setModoOscuro] = useState(false);
+  useEffect(() => {
+    document.body.className = modoOscuro ? "oscuro" : "claro";
+  }, [modoOscuro]);
+  
+  const toggleModo = () => setModoOscuro((prev) => !prev);
+  
+
+
+  interface Bill {
+    billNumber: string;
+    firstName: string;
+    lastName: string;
+    country: string;
+    phone: number;
+    address: string;
+    selectedCar: string;
+    quantity: number;
+    price: number;
+    txHash: string;
+    timestamp: string;
+  }
+
+  function formatFecha(timestamp: any) {
+    const fecha = new Date(timestamp);
+    const dia = String(fecha.getDate()).padStart(2, '0');
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+    const año = String(fecha.getFullYear()).slice(-2);
+    return `${dia}/${mes}/${año}`;
+  }
 
   useEffect(() => {
     async function datos() {
@@ -28,67 +47,132 @@ export default function Sendrect() {
     datos();
   }, []);
 
-  function formatFecha(timestamp: string) {
-    const fecha = new Date(timestamp);
-    const dia = String(fecha.getDate()).padStart(2, '0');
-    const mes = String(fecha.getMonth() + 1).padStart(2, '0');
-    const año = String(fecha.getFullYear()).slice(-2);
-    return `${dia}/${mes}/${año}`;
-  }
+  const facturasFiltradas = lista.filter((item) => {
+    const fecha = new Date(item.timestamp);
+    const dia = fecha.getDate();
+    const mes = fecha.getMonth() + 1;
+    const anio = fecha.getFullYear();
 
-  function toggleDetalles(id: string) {
-    setDetallesVisibles(prev => ({
+    const cumpleDia = filtroDia ? dia === parseInt(filtroDia) : true;
+    const cumpleMes = filtroMes ? mes === parseInt(filtroMes) : true;
+    const cumpleAnio = filtroAnio ? anio === parseInt(filtroAnio) : true;
+
+    return cumpleDia && cumpleMes && cumpleAnio;
+  });
+
+  const toggleExpandido = (billNumber: string) => {
+    setExpandido((prev) => ({
       ...prev,
-      [id]: !prev[id],
+      [billNumber]: !prev[billNumber],
     }));
-  }
+  };
 
   return (
-    <section className={styles.section__factura}>
+    <section className={styles.facturas__container}>
       <h1>REGISTRO DE FACTURACIÓN</h1>
-      <div className={styles.factura__grid}>
-        {/* Facturas por enviar */}
-        <div className={styles.factura__columna}>
-          <h2>Por Enviar</h2>
-          {lista.length > 0 ? (
-            <ul className={styles.factura__lista}>
-              {lista.map((item) => (
-                <li
-                  key={item.billNumber}
-                  className={styles.factura__item}
-                  data-id={item.billNumber}
-                  data-status="pendiente"
-                >
-                  <p><strong>{item.firstName} {item.lastName}</strong></p>
-                  <p>Dirección: {item.address}</p>
-                  <p>Auto: {item.selectedCar}</p>
-                  <button onClick={() => toggleDetalles(item.billNumber)}>
-                    {detallesVisibles[item.billNumber] ? "Ocultar detalles" : "Ver detalles"}
-                  </button>
+      <button className={styles.toggleModo} onClick={toggleModo}>
+        {modoOscuro ? "☀️ Modo claro" : "🌙 Modo oscuro"}
+      </button>
 
-                  {detallesVisibles[item.billNumber] && (
-                    <div className={styles.factura__detalles}>
-                      <p>País: {item.country}</p>
-                      <p>Teléfono: {item.phone}</p>
-                      <p>Cantidad: {item.quantity}</p>
-                      <p>Precio: {item.price}</p>
-                      <p>Fecha: {formatFecha(item.timestamp)}</p>
-                      <p>TxHash: {item.txHash}</p>
-                    </div>
-                  )}
-                </li>
-              ))}
-            </ul>
+
+      {/* 🔎 Filtros */}
+      <div className={styles.filtro__fecha}>
+        <label>
+          Día:
+          <input
+            type="number"
+            value={filtroDia}
+            onChange={(e) => setFiltroDia(e.target.value)}
+            min="1"
+            max="31"
+            className="input_fecha"
+          />
+        </label>
+        <label>
+          Mes:
+          <input
+            type="number"
+            value={filtroMes}
+            onChange={(e) => setFiltroMes(e.target.value)}
+            min="1"
+            max="12"
+            className="input_fecha"
+          />
+        </label>
+        <label>
+          Año:
+          <input
+            type="number"
+            value={filtroAnio}
+            onChange={(e) => setFiltroAnio(e.target.value)}
+            min="1900"
+            className="input_fecha"
+          />
+        </label>
+      </div>
+
+      <div className={styles.columnas}>
+        {/* FACTURAS POR ENVIAR */}
+        <div className={styles.columna}>
+          <h2>Facturas por enviar</h2>
+          {facturasFiltradas.length > 0 ? (
+            <table className={styles.tabla}>
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Dirección</th>
+                  <th>Auto</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {facturasFiltradas.map((item) => (
+                  <Fragment key={item.billNumber}>
+                    <tr
+                      data-id={item.billNumber}
+                      data-status="porEnviar"
+                    >
+                      <td>{item.firstName} {item.lastName}</td>
+                      <td>{item.address}</td>
+                      <td>{item.selectedCar}</td>
+                      <td>
+                        <button
+                          className={styles.botonDetalles}
+                          onClick={() => toggleExpandido(item.billNumber)}
+                        >
+                          {expandido[item.billNumber] ? "Ocultar" : "Ver detalles"}
+                        </button>
+                      </td>
+                    </tr>
+                    {expandido[item.billNumber] && (
+                      <tr className={styles.filaDetalles}>
+                        <td colSpan={4}>
+                          <div className={styles.detalles}>
+                            <ul>
+                              <li><strong>País:</strong> {item.country}</li>
+                              <li><strong>Teléfono:</strong> {item.phone}</li>
+                              <li><strong>Cantidad:</strong> {item.quantity}</li>
+                              <li><strong>Precio:</strong> {item.price}</li>
+                              <li><strong>Fecha:</strong> {formatFecha(item.timestamp)}</li>
+                              <li><strong>Hash:</strong> {item.txHash}</li>
+                            </ul>
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </Fragment>
+                ))}
+              </tbody>
+            </table>
           ) : (
-            <p>Cargando datos...</p>
+            <p>No se encontraron resultados con los filtros actuales.</p>
           )}
         </div>
 
-        {/* Facturas enviadas (a integrar luego con drag and drop) */}
-        <div className={styles.factura__columna}>
-          <h2>Enviadas</h2>
-          {/* Por ahora vacío */}
-          <p>Arrastra aquí las facturas enviadas.</p>
+        {/* FACTURAS ENVIADAS */}
+        <div className={styles.columna}>
+          <h2>Facturas enviadas</h2>
+          <p className={styles.vacio}>Aquí aparecerán las facturas enviadas.</p>
         </div>
       </div>
     </section>
