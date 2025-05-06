@@ -1,0 +1,33 @@
+.factura__grid {
+    display: flex;
+    gap: 2rem;
+  }
+  
+  .factura__columna {
+    flex: 1;
+    background-color: #f9f9f9;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  
+  .factura__lista {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .factura__item {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 6px;
+  }
+  
+  .factura__detalles {
+    margin-top: 1rem;
+    background-color: #eef;
+    padding: 0.5rem;
+    border-radius: 4px;
+  }
+  
