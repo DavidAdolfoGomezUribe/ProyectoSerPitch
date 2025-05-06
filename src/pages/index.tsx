@@ -6,7 +6,7 @@ import { Transaction } from '@meshsdk/core';
 import Image from 'next/image';
 import AutoScrollGallery from "./components/AutoScrollGallery";
 import  ModalForm  from "./components/modalform";
-
+import Link from "next/link"
 
 
 const Home: NextPage = () => {
@@ -284,12 +284,7 @@ const Home: NextPage = () => {
               <div>
                 <Image width={1000} height={1000} alt="icon" src={currentCarImage} ></Image>
                 
-                <div>
-                  
-
-                  <ModalForm />
-                  
-                </div>
+                <ModalForm />
                 
               </div>
 
@@ -379,12 +374,65 @@ const Home: NextPage = () => {
 
         </section>
 
+        <section>
+          <article>
+            <div>
+              <div>
+                <h1><strong>Buy car</strong></h1>
+                <p>
+                BuyCar is ready to help customers easily find their dream car and offers a variety of flexible and personalized payment solutions. BuyCar is 
+                committed to providing the best and most satisfying car buying experience for every customer.
+                </p>
+                <div>
+                  {/* img */}
+                  <p>Street 27A Av St McClaire , LA, USA</p>
+                </div>
+                <div>
+                  {/* img */}
+                  <p>info@buycar.co</p>
+                </div>
+
+              </div>
+              
+              <div>
+                <h1><strong>Company</strong></h1>
+                <p>About Us</p>
+                <p>Warranty Policy</p>
+                <p>Terms of Service</p>
+              </div>
+              
+              
+              <div>
+                <h1><strong>Knowledge</strong></h1>
+                <p>Car Reviews</p>
+                <p>Car News</p>
+              </div>
+              
+              
+              <div>
+                <h1><strong>Purchase</strong> </h1>
+                <p>Cash payment</p>
+                <p>Credit payment</p>
+                <Link href="/login">Log in</Link>
+                 
+              </div>
+            </div>
+            <div>
+              <p>© 2025 David A Gomez U</p>
+              <div>
+                <p>img1</p>
+                <p>img2</p>
+                <p>img3</p>
+                <p>img4</p>
+              </div>
+            </div>
+
+          </article>
+
+        </section>
+
 
       </main>
-
-
-          
-
 
     </div>
   );
