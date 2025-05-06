@@ -56,19 +56,11 @@ export default function LoginPage() {
     return (
         <div className={styles["login-container"]}>
             {/* Navbar */}
-            <header className="headercontainer">
+            <header className={styles["header-container"]}>
                 <div>
                     <Link href="/">
-                        <Image alt="logo" src="/buycarlogo.png" width={500} height={400} className="logo" />
+                        <Image alt="logo" src="/buycarlogo.png" width={500} height={400} className={styles["logo"]} />
                     </Link>
-
-                    <div>
-                        <p>Home page</p>
-                        <p>Car collection</p>
-                        <p>Car Reviews</p>
-                        <p>Car News</p>
-                    </div>
-
                 </div>
             </header>
 
@@ -76,8 +68,8 @@ export default function LoginPage() {
             <div className={styles["login-form-container"]}>
                 <div className={styles["login-card"]}>
                     <div className={styles["login-card-header"]}>
-                        <h2 className={styles["login-card-title"]}>Iniciar Sesión</h2>
-                        <p className={styles["login-card-description"]}>Ingrese sus credenciales para acceder a BuyCar</p>
+                        <h2 className={styles["login-card-title"]}>Log in</h2>
+                        <p className={styles["login-card-description"]}>Type your credentials</p>
                     </div>
                     <div className={styles["login-card-content"]}>
                         <form onSubmit={handleLogin} className={styles["login-form"]}>
@@ -89,12 +81,12 @@ export default function LoginPage() {
                             )}
                             <div className={styles["login-form-group"]}>
                                 <label htmlFor="email" className={styles["login-label"]}>
-                                    Correo electrónico
+                                    Email
                                 </label>
                                 <input
                                     id="email"
                                     type="email"
-                                    placeholder="ejemplo@buycar.com"
+                                    placeholder="example@buycar.com"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     required
@@ -103,7 +95,7 @@ export default function LoginPage() {
                             </div>
                             <div className={styles["login-form-group"]}>
                                 <label htmlFor="password" className={styles["login-label"]}>
-                                    Contraseña
+                                    Password
                                 </label>
                                 <input
                                     id="password"
@@ -122,20 +114,20 @@ export default function LoginPage() {
                     <div className={styles["login-card-footer"]}>
                         <div className={styles["login-links"]}>
                             <Link href="#" className={styles["login-link"]}>
-                                ¿Olvidó su contraseña?
+                                Did you forget your password?
                             </Link>
                             <Link href="#" className={styles["login-link"]}>
-                                Registrarse
+                                Register
                             </Link>
                         </div>
-                        <p className={styles["login-credentials-hint"]}>Credenciales por defecto: admin@buycar.com / admin123</p>
+                        <p className={styles["login-credentials-hint"]}>Default credentials: admin@buycar.com / admin123</p>
                     </div>
                 </div>
             </div>
 
             {/* Footer */}
             <footer className={styles["login-footer"]}>
-                <p>© 2023 BuyCar. Todos los derechos reservados.</p>
+                <p>© 2025 BuyCar. All rights are reserved.</p>
             </footer>
         </div>
     )
