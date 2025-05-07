@@ -4,6 +4,7 @@ import type React from "react"
 
 import { useEffect, useState, Fragment } from "react"
 import styles from "./Sendrect.module.css"
+import { useRouter } from "next/navigation"
 
 interface Bill {
   billNumber: string
@@ -29,6 +30,7 @@ export default function Sendrect() {
   const [expandido, setExpandido] = useState<{ [key: string]: boolean }>({})
   const [modoOscuro, setModoOscuro] = useState(false)
   const [draggedItem, setDraggedItem] = useState<Bill | null>(null)
+  const router = useRouter()
 
   useEffect(() => {
     document.body.className = modoOscuro ? "oscuro" : "claro"
@@ -191,9 +193,45 @@ export default function Sendrect() {
     setDraggedItem(null)
   }
 
+  const handleLogout = () => {
+    // Borrar completamente el localStorage
+    localStorage.clear()
+
+    // Redireccionar al login
+    router.replace("/login")
+  }
+
+  // Componentes de iconos SVG
+  const LogOutIcon = () => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+      <polyline points="16 17 21 12 16 7"></polyline>
+      <line x1="21" y1="12" x2="9" y2="12"></line>
+    </svg>
+  )
+
   return (
     <section className={styles.facturas__container}>
-      <h1>REGISTRO DE FACTURACIÓN</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">REGISTRO DE FACTURACIÓN</h1>
+        <button
+          onClick={handleLogout}
+          className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md transition-colors"
+        >
+          <LogOutIcon />
+          Cerrar sesión
+        </button>
+      </div>
       <button className={styles.toggleModo} onClick={toggleModo}>
         {modoOscuro ? "☀️ Modo claro" : "🌙 Modo oscuro"}
       </button>
