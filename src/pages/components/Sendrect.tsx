@@ -28,15 +28,10 @@ export default function Sendrect() {
   const [filtroMes, setFiltroMes] = useState("")
   const [filtroAnio, setFiltroAnio] = useState("")
   const [expandido, setExpandido] = useState<{ [key: string]: boolean }>({})
-  const [modoOscuro, setModoOscuro] = useState(false)
   const [draggedItem, setDraggedItem] = useState<Bill | null>(null)
   const router = useRouter()
 
-  useEffect(() => {
-    document.body.className = modoOscuro ? "oscuro" : "claro"
-  }, [modoOscuro])
 
-  const toggleModo = () => setModoOscuro((prev) => !prev)
 
   function formatFecha(timestamp: Date) {
     const fecha = new Date(timestamp)
@@ -224,19 +219,8 @@ export default function Sendrect() {
     <section className={styles.facturas__container}>
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">REGISTRO DE FACTURACIÓN</h1>
-        <button
-          onClick={handleLogout}
-          className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md transition-colors"
-        >
-          <LogOutIcon />
-          Cerrar sesión
-        </button>
-      </div>
-      <button className={styles.toggleModo} onClick={toggleModo}>
-        {modoOscuro ? "☀️ Modo claro" : "🌙 Modo oscuro"}
-      </button>
 
-      {/* 🔎 Filtros */}
+
       <div className={styles.filtro__fecha}>
         <label>
           Día:
@@ -246,7 +230,7 @@ export default function Sendrect() {
             onChange={(e) => setFiltroDia(e.target.value)}
             min="1"
             max="31"
-            className="input_fecha"
+            className={styles.input_fecha}
           />
         </label>
         <label>
@@ -257,7 +241,7 @@ export default function Sendrect() {
             onChange={(e) => setFiltroMes(e.target.value)}
             min="1"
             max="12"
-            className="input_fecha"
+            className={styles.input_fecha}
           />
         </label>
         <label>
@@ -267,10 +251,20 @@ export default function Sendrect() {
             value={filtroAnio}
             onChange={(e) => setFiltroAnio(e.target.value)}
             min="1900"
-            className="input_fecha"
+            className={styles.input_fecha}
           />
         </label>
       </div>
+              <button
+          onClick={handleLogout}
+          className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md transition-colors"
+        >          Cerrar sesión
+
+                  </button>
+          <LogOutIcon />
+      </div>
+
+      {/* 🔎 Filtros */}
 
       <div className={styles.columnas}>
         {/* FACTURAS POR ENVIAR */}
