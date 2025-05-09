@@ -533,32 +533,8 @@ html{
 
 }
 
-/* MODO CLARO U OBSCURO PARA LA PAGINA DE FACTURAS */
-body.claro {
-  background-color: #ffffff;
-  color: #000000;
-}
+body{
+  background: linear-gradient(-50deg, rgba(0, 114, 237, 1)0%, rgba(150, 8, 200, 1)100%);
 
-body.oscuro {
-  background-color: #121212;
-  color: #f0f0f0;
-}
-
-body.oscuro table,
-body.oscuro th,
-body.oscuro td {
-  background-color: #1e1e1e;
-  color: #f0f0f0;
-}
-
-body.oscuro input {
-  background-color: #2a2a2a;
-  color: white;
-  border: 1px solid #555;
-}
-
-body.oscuro button {
-  background-color: #333;
-  color: #fff;
 }
 
